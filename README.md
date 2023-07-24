@@ -1,11 +1,11 @@
 # llaumebot
 
-<img width="150" height="150" align="right" style="float: right; margin: 0 10px 0 0;" alt="music_disc" src="public/imgs/logo2.png">
+<img width="150" height="150" align="right" style="float: right; margin: 0 10px 0 0;" alt="music_disc" src="https://avatars.githubusercontent.com/u/55829314?v=4">
 
-<a href="https://github.com/hmes98318/Music-Disc/releases"><img alt="GitHub package.json version" src="https://img.shields.io/github/package-json/v/hmes98318/Music-Disc?style=for-the-badge"></a> 
-<a href="https://discord.js.org/"><img src="https://img.shields.io/badge/Discord.JS-v14-blue?style=for-the-badge&logo=DISCORD" /></a> 
-<a href="https://nodejs.org/"><img src="https://img.shields.io/badge/Node.JS->=16.13.0-brightgreen?style=for-the-badge&logo=Node.js"></a> 
-<a href="https://github.com/llaumegui/llaumebot/blob/main/LICENSE"><img alt="GitHub" src="https://img.shields.io/github/license/hmes98318/Music-Disc?style=for-the-badge&color=brightgreen"></a>  
+<a href="https://github.com/hmes98318/Music-Disc/releases"><img alt="GitHub package.json version" src="https://img.shields.io/github/package-json/v/hmes98318/Music-Disc?style=for-the-badge"></a>
+<a href="https://discord.js.org/"><img src="https://img.shields.io/badge/Discord.JS-v14.11.0-blue?style=for-the-badge&logo=DISCORD&logoColor=white" /></a> 
+<a href="https://nodejs.org/"><img src="https://img.shields.io/badge/Node.JS-v18.16.1-blue?style=for-the-badge&logo=Node.js&logoColor=white"></a> 
+<a href="https://github.com/llaumegui/llaumebot/blob/main/LICENSE"><img alt="GitHub" src="https://img.shields.io/badge/LICENSE-MIT-blue?style=for-the-badge"></a>
 
 ### Discord.js v14 Music Bot  
 Supports **YouTube**, **Spotify**, **SoundCloud** streams.
