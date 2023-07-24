@@ -41,6 +41,12 @@ PREFIX = !
 YOUTUBE_COOKIES = YOUR_COOKIES
 PROXY = YOUR PROXY
 GROMIT = "https://youtu.be/VimZfYsDHkc"
+INVALID_COMMAND = false
 ```
-
+<details> 
+  <summary>Detailed description</summary>
+  
+  **`INVALID_COMMAND`** : Send a message to tell if the command sent is valid or not
+  
+</details>
 
