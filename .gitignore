@@ -1,0 +1,7 @@
+node_modules
+src/assets/*
+.env
+
+# locked commands
+src/commands/kiss.js
+src/commands/gurossupulaylistu.js
