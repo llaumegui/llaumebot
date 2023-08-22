@@ -34,6 +34,9 @@ function throwError(message, error) {
 		case "not-playing":
 			message.channel.send("The Music Bot is not playing");
 			break;
+		case "player-error":
+			message.channel.send("The player encountered an error and skipped the track, it may be age restricted");
+			break;
 		default:
 			message.channel.send(`${error} errortype not yet implemented`);
 			break;

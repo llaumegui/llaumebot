@@ -13,9 +13,15 @@ const { embedPlaying, deleteEmbedPlaying } = require("./embeds");
 const PREFIX = process.env.PREFIX;
 const PROXY = process.env.PROXY;
 const COOKIES = process.env.YOUTUBE_COOKIES;
+const DEBUG = process.env.DEBUG == "true" ? true : false;
+const ID_DEBUG = process.env.ID_DEBUG;
+
+var lastMessage = null;
 
 module.exports = {
 	function: embedPlaying,
+	DEBUG,
+	ID_DEBUG,
 };
 
 const client = new Client({
@@ -41,6 +47,9 @@ client.player = new Player(client, {
 				cookie: COOKIES,
 			},
 		},
+		html5: "1",
+		c: "TVHTML5",
+		cver: "6.20180913",
 	},
 });
 client.player.extractors.register(YouTubeExtractor);
@@ -71,6 +80,8 @@ async function handleCommand(message) {
 		return;
 	}
 	await cmd.run({ client, message });
+
+	lastMessage = message;
 }
 
 // Music Bot Events
@@ -86,9 +97,15 @@ client.player.events.on("queueDelete", (queue) => {
 client.player.events.on("disconnect", (queue) => {
 	deleteEmbedPlaying();
 });
-//#endregion
+client.player.events.on("playerError", () => {
+	throwError(lastMessage, "player-error");
+});
 
-client.login(process.env.TOKEN);
+//#endregion
+if (DEBUG) {
+	client.login(process.env.TOKEN_DEBUG);
+	console.log("DEBUG_MODE");
+} else client.login(process.env.TOKEN);
 client.on("ready", (c) => {
 	console.log(`${c.user.username} is Online!`);
 });

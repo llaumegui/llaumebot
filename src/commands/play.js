@@ -1,6 +1,7 @@
 const { QueryResolver, useQueue, useMainPlayer } = require("discord-player");
 const { throwError } = require("../errors");
 const { getStringArg, getArgs, getRandomInt } = require("../tools");
+const { DEBUG, ID_DEBUG } = require("../index");
 
 module.exports = {
 	name: "play",
@@ -8,14 +9,15 @@ module.exports = {
 	description: "Add the selected track.s to the queue",
 
 	run: async ({ client, message }) => {
-		if (!message.member.voice.channel) return throwError(message, "not-in-channel");
+		if (!DEBUG) if (!message.member.voice.channel) return throwError(message, "not-in-channel");
 
 		console.log(message.content);
 
 		const player = useMainPlayer();
 		const queue = useQueue(message.guildId);
 
-		if (queue && queue.channel != message.member.voice.channel) return throwError(message, "not-in-same-channel");
+		if (!DEBUG)
+			if (queue && queue.channel != message.member.voice.channel) return throwError(message, "not-in-same-channel");
 
 		let args = getArgs(message);
 		var shuffle = args[1] && args[1].toLowerCase() == "shuffle";
@@ -48,8 +50,8 @@ module.exports = {
 					: `**${result.tracks[0].title}** has been added to the Queue (**${result.tracks[0].duration}**)`
 			);
 
-		//console.log(queue.tracks.size);
-		await player.play(message.member.voice.channel, result, {
+		const link = DEBUG ? ID_DEBUG : message.member.voice.channel;
+		await player.play(link, result, {
 			nodeOptions: {
 				metadata: {
 					channel: message.channel,
@@ -60,6 +62,7 @@ module.exports = {
 				leaveOnEmptyCooldown: 60000,
 				leaveOnEnd: true,
 				leaveOnEndCooldown: 300000,
+				skipOnNoStream: true,
 			},
 		});
 

@@ -9,12 +9,20 @@ module.exports = {
 	run: async ({ client, message }) => {
 		let args = getArgs(message);
 		if (args.length == 0) {
-			await message.channel.bulkDelete(100);
+			try {
+				await message.channel.bulkDelete(100);
+			} catch {
+				throwError(message, "clean-error");
+			}
 		} else {
 			var count = tryParse(args[0]);
 			if (count == null) return throwError(message, "not-a-number");
 
-			await message.channel.bulkDelete(count > 100 ? 100 : count);
+			try {
+				await message.channel.bulkDelete(count > 100 ? 100 : count);
+			} catch {
+				throwError(message, "clean-error");
+			}
 		}
 	},
 };
