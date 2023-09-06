@@ -20,15 +20,17 @@ module.exports = {
 			if (queue && queue.channel != message.member.voice.channel) return throwError(message, "not-in-same-channel");
 
 		let args = getArgs(message);
-		var shuffle = args[1] && args[1].toLowerCase() == "shuffle";
+		var shuffle = args[1] && (args[1].toLowerCase() == "shuffle" || args[0].toLowerCase() == "shuffle");
 
 		var arg = getStringArg(message);
 		arg = shuffle ? arg.replace("shuffle", "") : arg;
 
 		if (arg == "") return throwError(message, "play-incomplete");
 
+		arg = resolvePlaylist(arg);
+
 		var type = QueryResolver.resolve(arg);
-		//console.log(type);
+		console.log(arg);
 
 		const result = await player.search(arg, {
 			requestedBy: message.user,
@@ -71,3 +73,13 @@ module.exports = {
 		}
 	},
 };
+
+// resolve the link of a youtubePlaylist
+function resolvePlaylist(arg) {
+	if (arg.includes("youtube.com") && !arg.includes("www.youtube.com")) {
+		arg = arg.replace("youtube.com", "www.youtube.com");
+		arg = arg.slice(0, arg.indexOf("&si="));
+		return arg;
+	}
+	return arg;
+}
