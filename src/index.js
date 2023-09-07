@@ -36,7 +36,11 @@ const client = new Client({
 client.commands = new Collection();
 client.player = new Player(client, {
 	deafenOnJoin: true,
-	lagMonitor: 1000,
+	leaveOnEmpty: true,
+	leaveOnEmptyCooldown: 60000,
+	leaveOnEnd: true,
+	leaveOnEndCooldown: 300000,
+	skipOnNoStream: true,
 	ytdlOptions: {
 		filter: "audioonly",
 		quality: "highestaudio",
@@ -67,11 +71,11 @@ for (const file of commandFiles) {
 
 //#region  events
 client.on("messageCreate", (message) => {
+	// TODO : Check permission
+	if (isBot(message) || message.content[0] != PREFIX) return;
 	handleCommand(message);
 });
 async function handleCommand(message) {
-	if (isBot(message) || message.content[0] != PREFIX) return;
-
 	let args = message.content.substring(PREFIX.length).split(" ");
 	const cmd = client.commands.get(args[0]);
 	//console.log(cmd);
@@ -79,23 +83,13 @@ async function handleCommand(message) {
 		if (process.env.INVALID_COMMAND == true) throwError(message, "invalid-command");
 		return;
 	}
-	await cmd.run({ client, message });
-
 	lastMessage = message;
+	await cmd.run({ client, message });
 }
 
 // Music Bot Events
 client.player.events.on("playerStart", (queue, track) => {
 	embedPlaying(queue, track);
-});
-client.player.events.on("emptyQueue", (queue) => {
-	deleteEmbedPlaying();
-});
-client.player.events.on("queueDelete", (queue) => {
-	deleteEmbedPlaying();
-});
-client.player.events.on("disconnect", (queue) => {
-	deleteEmbedPlaying();
 });
 client.player.events.on("playerError", () => {
 	throwError(lastMessage, "player-error");

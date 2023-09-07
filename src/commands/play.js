@@ -29,16 +29,15 @@ module.exports = {
 
 		arg = resolvePlaylist(arg);
 
-		var type = QueryResolver.resolve(arg);
-		console.log(arg);
+		var query = QueryResolver.resolve(arg);
 
 		const result = await player.search(arg, {
 			requestedBy: message.user,
-			searchEngine: type,
+			searchEngine: query.type,
 		});
 		if (result.tracks.length === 0) return throwError(message, "no-results");
 
-		if (shuffle && type == "youtubePlaylist") {
+		if (shuffle && query.type == "youtubePlaylist") {
 			const temp = result.tracks[0];
 			const val = getRandomInt(result.tracks.length);
 			result.tracks[0] = result.tracks[val];
@@ -47,11 +46,10 @@ module.exports = {
 
 		if (client.player.nodes.get(message.guild.id) && client.player.nodes.get(message.guildId).isPlaying())
 			message.channel.send(
-				type == "youtubePlaylist"
+				query.type == "youtubePlaylist"
 					? `**${result.tracks.length} songs from [${result.playlist.title}]** have been added to the Queue`
 					: `**${result.tracks[0].title}** has been added to the Queue (**${result.tracks[0].duration}**)`
 			);
-
 		const link = DEBUG ? ID_DEBUG : message.member.voice.channel;
 		await player.play(link, result, {
 			nodeOptions: {
@@ -60,11 +58,6 @@ module.exports = {
 					client: message.guild?.members.me,
 					guildId: message.guildId,
 				},
-				leaveOnEmpty: true,
-				leaveOnEmptyCooldown: 60000,
-				leaveOnEnd: true,
-				leaveOnEndCooldown: 300000,
-				skipOnNoStream: true,
 			},
 		});
 
